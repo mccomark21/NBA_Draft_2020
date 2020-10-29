@@ -1,6 +1,6 @@
 # NBA Prospect Dashboard 2020
 
-Foobar is a Python library for dealing with word pluralization.
+Find the application [here!](https://mccomark21.shinyapps.io/NBA_Draft_2020/)
 
 ## Top 10 by Selected Metric
 
