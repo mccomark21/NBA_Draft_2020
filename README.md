@@ -2,7 +2,7 @@
 
 Foobar is a Python library for dealing with word pluralization.
 
-## Installation
+## Top 10 by Selected Metric
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 
@@ -10,7 +10,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 pip install foobar
 ```
 
-## Usage
+## Scoring Dynamics & Efficiency
 
 ```python
 import foobar
