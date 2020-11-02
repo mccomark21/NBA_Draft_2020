@@ -6,26 +6,12 @@ Find the application [here!](https://mccomark21.shinyapps.io/NBA_Draft_2020/)
 
 ## Top 10 by Selected Metric
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
-
-```bash
-pip install foobar
-```
+The first chart available is a simple bar chart which allows users to see the top 10 players for whichever statisitc they choose.
 
 ## Scoring Dynamics & Efficiency
 
-```python
-import foobar
+The next visual available is a scatter plot focused on scoring. The X axis features any metrics related to 3 pointers while the Y axis focuses on any metrics related to 2 pointers. The data points are colored sequentially by true shooting percentage from lowest to highest (red -> yellow -> green -> blue).
 
-foobar.pluralize('word') # returns 'words'
-foobar.pluralize('goose') # returns 'geese'
-foobar.singularize('phenomena') # returns 'phenomenon'
-```
+## Box Plot Analysis
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
+The third visual is very different from the first two as it containsa game log data. It is a box plot allowing users to view the distribution of the available metrics broken out by player.
