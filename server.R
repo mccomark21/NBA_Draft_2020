@@ -6,7 +6,9 @@ server <- function(input, output) {
     
     reacitve_df <- reactive({
         
-        master_df %>% filter(Class %in% c(input$SelectClass))
+        master_df %>% 
+            filter(Class %in% c(input$SelectClass))
+        
         
     })
     
@@ -20,6 +22,16 @@ server <- function(input, output) {
                     multiple = TRUE,
         options = list(
                         `actions-box` = TRUE))
+    })
+    
+    output$SelectConf <- renderUI({
+        
+        shinyWidgets::pickerInput("SelectConf", label = "Select Conf",
+                                  choices = master_df$conf,
+                                  selected = master_df$conf,
+                                  multiple = TRUE,
+                                  options = list(
+                                      `actions-box` = TRUE))
     })
     
     output$SelectMetric_BP <- renderUI({
@@ -41,6 +53,20 @@ server <- function(input, output) {
         selectInput("SelectMetric_3P", label = "Select 3P Metric",
                     choices = grep("3P",colnames(master_df),value = TRUE),
                     selected = "Per.Game.3P")
+    })
+    
+    output$SelectMetric_PAP1 <- renderUI({
+        
+        selectInput("SelectMetric_PAP1", label = "Select X Metric",
+                    choices = colnames(select_if(master_df, is.numeric)),
+                    selected = "OBPM")
+    })
+    
+    output$SelectMetric_PAP2 <- renderUI({
+        
+        selectInput("SelectMetric_PAP2", label = "Select Y Metric",
+                    choices = colnames(select_if(master_df, is.numeric)),
+                    selected = "DBPM")
     })
     
     # Top 10 Bar plot ----
@@ -115,4 +141,42 @@ server <- function(input, output) {
         
     })
     
+    # Pick-A-Plot ----
+    
+    output$PickAPlot <- renderPlotly({
+        
+        reactive <- reacitve_df()
+        
+        f <- list(
+            family = "Courier New, monospace",
+            size = 18,
+            color = "#7f7f7f"
+        )
+        
+        x <- list(
+            title = "X Axis",
+            titlefont = f
+        )
+        
+        y <- list(
+            title = "Y Axis",
+            titlefont = f
+        )
+        
+        fig <- plot_ly(
+            data = reactive, 
+            x = ~get(input$SelectMetric_PAP1), y = ~get(input$SelectMetric_PAP2), 
+            color = ~Class,
+            colors = "Paired",
+            hovertemplate  = ~paste('</br> Player Name: ', PlayerName,
+                                    '</br> Class: ', Class,
+                                    '</br> School: ', School,
+                                    '</br> Conf: ', Conf,
+                                    '</br>',input$SelectMetric_PAP1,': ', get(input$SelectMetric_PAP1),
+                                    '</br>',input$SelectMetric_PAP2,': ', get(input$SelectMetric_PAP2)))
+        
+        fig <- fig %>% layout(xaxis = x, yaxis = y)
+        
+        
+    })
     }

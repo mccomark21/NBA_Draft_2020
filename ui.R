@@ -3,7 +3,8 @@ source("utility.R")
 ui <- dashboardPage(skin = "red",
     dashboardHeader(title = "Prospect Analysis"),
     dashboardSidebar(
-        uiOutput("SelectClass")
+        uiOutput("SelectClass"),
+        uiOutput("SelectConf")
     ),
     dashboardBody(
         # Hide Warnings 
@@ -17,9 +18,10 @@ ui <- dashboardPage(skin = "red",
                                            uiOutput("SelectMetric_2P"),
                                            uiOutput("SelectMetric_3P"),
                                            loadingscreen(plotlyOutput("score"))),
-                                  tabPanel("Tab 3", "Coming Soon"),
-                                  tabPanel("Tab 4", "Coming Soon"),
-                                  tabPanel("Tab 5", "Coming Soon")
+                                  tabPanel("Pick-A-Plot", 
+                                           uiOutput("SelectMetric_PAP1"),
+                                           uiOutput("SelectMetric_PAP2"),
+                                           loadingscreen(plotlyOutput("PickAPlot")))
                                   
                                   )))
         
