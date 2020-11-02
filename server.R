@@ -69,6 +69,13 @@ server <- function(input, output) {
                     selected = "DBPM")
     })
     
+    output$SelectMetric_Box <- renderUI({
+        
+        selectInput("SelectMetric_Box", label = "Select Metric",
+                    choices = colnames(select_if(gamelogs_df, is.numeric)),
+                    selected = "PTS")
+    })
+    
     # Top 10 Bar plot ----
     
     output$bar <- renderPlotly({
@@ -94,8 +101,6 @@ server <- function(input, output) {
         style(textposition = "top")
     
     })
-        
-    
     
     
     # Scoring Dynamics Scatter Plot ----
@@ -122,10 +127,11 @@ server <- function(input, output) {
         
         fig <- plot_ly(
             data = reactive, 
-            x = ~get(input$SelectMetric_3P), y = ~get(input$SelectMetric_2P), 
+            x = ~get(input$SelectMetric_3P), y = ~get(input$SelectMetric_2P),
             color = ~TS.,
-            text = ~PlayerName,
-            textposition = "top", mode = "markers+text",
+            # text = ~PlayerName,
+            textposition = "top", 
+            mode = "markers+text",
             hovertemplate  = ~paste('</br> Player Name: ', PlayerName,
                                     '</br> Class: ', Class,
                                     '</br> School: ', School,
@@ -139,6 +145,51 @@ server <- function(input, output) {
         fig <- fig %>% layout(xaxis = x, yaxis = y)
         
         
+    })
+    
+    # Box Plot Analysis ----
+    
+    output$box <- renderPlotly({
+        
+        df <- gamelogs_df %>% filter(Class %in% c(input$SelectClass))
+        
+        f <- list(
+            family = "Courier New, monospace",
+            size = 18,
+            color = "#7f7f7f"
+        )
+        
+        x <- list(
+            title = "Player Name",
+            titlefont = f
+        )
+        
+        y <- list(
+            title = input$SelectMetric_Box,
+            titlefont = f
+        )
+        
+        fig <- plot_ly(
+            data = df,
+            type = "box",
+            x = ~PlayerName,
+            y = ~get(input$SelectMetric_Box),
+            color = ~Class,
+            colors = "Paired",
+            boxpoints = "all",
+            jitter = 0.3,
+            quartilemethod="exclusive",
+            mode = "markers",
+            hovertemplate  = ~paste('</br> Player Name: ', PlayerName,
+                                    '</br> Class: ', Class,
+                                    '</br> School: ', School,
+                                    '</br> Opponent: ', Opponent,
+                                    '</br> Selected Metric: ', get(input$SelectMetric_Box)))
+        
+        fig <- fig %>% layout(xaxis = x, yaxis = y)
+    
+        fig
+    
     })
     
     # Pick-A-Plot ----
@@ -179,4 +230,5 @@ server <- function(input, output) {
         
         
     })
+    
     }

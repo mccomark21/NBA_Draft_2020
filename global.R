@@ -9,5 +9,7 @@ library(ggrepel)
 library(shinyWidgets)
 
 master_df <- read.csv("CBB_Data_2020.csv")
+gamelogs_df <- read.csv("GameLog_Data_2020.csv")
 
 master_df$Class <- factor(master_df$Class, levels = c("Freshman", "Sophmore", "Junior", "Senior"))
+gamelogs_df$Class <- factor(gamelogs_df$Class, levels = c("Freshman", "Sophmore", "Junior", "Senior"))

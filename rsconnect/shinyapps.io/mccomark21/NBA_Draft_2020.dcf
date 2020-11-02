@@ -5,9 +5,9 @@ account: mccomark21
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3109335
-bundleId: 3808338
+bundleId: 3809043
 url: https://mccomark21.shinyapps.io/NBA_Draft_2020/
-when: 1604276016.02878
+when: 1604295077.6699
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: .gitattributes|.RData|README.md|NBA-Draft-Prospects-2020
