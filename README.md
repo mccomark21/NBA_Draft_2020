@@ -1,6 +1,8 @@
 # NBA Prospect Dashboard 2020
 
-Foobar is a Python library for dealing with word pluralization.
+This Shiny application was built to help users analyze 2020 NBA Draft prospects. The available tabs allow for customization of the data so users can slice and dice to their pleasure.
+
+Find the application [here!](https://mccomark21.shinyapps.io/NBA_Draft_2020/)
 
 ## Top 10 by Selected Metric
 
