@@ -15,3 +15,7 @@ The next visual available is a scatter plot focused on scoring. The X axis featu
 ## Box Plot Analysis
 
 The third visual is very different from the first two as it containsa game log data. It is a box plot allowing users to view the distribution of the available metrics broken out by player.
+
+## Pick-A-Plot
+
+The final plot has been the favorite in past iterations. It's another scatter plot but for this one users can choose whichever metrics they like. This is where you can create your own unique plot and share your analysis!
