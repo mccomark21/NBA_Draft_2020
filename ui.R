@@ -3,8 +3,7 @@ source("utility.R")
 ui <- dashboardPage(skin = "red",
     dashboardHeader(title = "Prospect Analysis"),
     dashboardSidebar(
-        uiOutput("SelectClass"),
-        uiOutput("SelectConf")
+        uiOutput("SelectClass")
     ),
     dashboardBody(
         # Hide Warnings 

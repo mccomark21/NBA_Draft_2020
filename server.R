@@ -2,13 +2,20 @@ source("utility.R")
 
 server <- function(input, output) {
     
-    # Reactive Dataframe ----
+    # Reactive Data frame ----
     
     reacitve_df <- reactive({
         
         master_df %>% 
             filter(Class %in% c(input$SelectClass))
         
+        
+    })
+    
+    reacitve_df2 <- reactive({
+        
+        gamelogs_df %>% 
+            filter(Class %in% c(input$SelectClass))
         
     })
     
@@ -24,16 +31,6 @@ server <- function(input, output) {
                         `actions-box` = TRUE))
     })
     
-    output$SelectConf <- renderUI({
-        
-        shinyWidgets::pickerInput("SelectConf", label = "Select Conf",
-                                  choices = master_df$conf,
-                                  selected = master_df$conf,
-                                  multiple = TRUE,
-                                  options = list(
-                                      `actions-box` = TRUE))
-    })
-    
     output$SelectMetric_BP <- renderUI({
         
         selectInput("SelectMetric_BP", label = "Select Metric",
@@ -45,14 +42,14 @@ server <- function(input, output) {
         
         selectInput("SelectMetric_2P", label = "Select 2P Metric",
                     choices = grep("2P",colnames(master_df),value = TRUE),
-                    selected = "Per.Game.2P")
+                    selected = "2P Per Game")
     })
     
     output$SelectMetric_3P <- renderUI({
         
         selectInput("SelectMetric_3P", label = "Select 3P Metric",
                     choices = grep("3P",colnames(master_df),value = TRUE),
-                    selected = "Per.Game.3P")
+                    selected = "3P Per Game")
     })
     
     output$SelectMetric_PAP1 <- renderUI({
@@ -82,10 +79,10 @@ server <- function(input, output) {
         
         # https://stackoverflow.com/questions/43999317/how-to-call-reorder-within-aes-string-of-ggplot
     
-    b <- ggplot(data=head(arrange(reacitve_df(),desc(!!sym(input$SelectMetric_BP))),10), aes(x=reorder(PlayerName,-!!sym(input$SelectMetric_BP)), 
+    b <- ggplot(data=head(arrange(reacitve_df(),desc(!!sym(input$SelectMetric_BP))),10), aes(x=reorder(Player_Name,-!!sym(input$SelectMetric_BP)), 
                                                                                          y=!!sym(input$SelectMetric_BP), 
                                                                                          fill=Class,
-                                                                                         text1 = PlayerName,
+                                                                                         text1 = Player_Name,
                                                                                          text2 = Class,
                                                                                          text3 = School,
                                                                                          text4 = Conf)) +
@@ -128,19 +125,19 @@ server <- function(input, output) {
         fig <- plot_ly(
             data = reactive, 
             x = ~get(input$SelectMetric_3P), y = ~get(input$SelectMetric_2P),
-            color = ~TS.,
-            # text = ~PlayerName,
+            color = ~`TS%`,
+            size = ~`FT Per Game`,
             textposition = "top", 
             mode = "markers+text",
-            hovertemplate  = ~paste('</br> Player Name: ', PlayerName,
+            hovertemplate  = ~paste('</br> Player Name: ', Player_Name,
                                     '</br> Class: ', Class,
                                     '</br> School: ', School,
                                     '</br> Conf: ', Conf,
                                     '</br> 2P Metric: ', get(input$SelectMetric_2P),
                                     '</br> 3P Metric: ', get(input$SelectMetric_3P),
-                                    '</br> FT Per Game: ', Per.Game.FT,
-                                    '</br> TS%: ', TS.,
-                                    '</br> Points Per Game: ', Per.Game.PTS))
+                                    '</br> FT Per Game: ', `FT Per Game`,
+                                    '</br> TS%: ', `TS%`,
+                                    '</br> Points Per Game: ', `PTS Per Game`))
         
         fig <- fig %>% layout(xaxis = x, yaxis = y)
         
@@ -151,7 +148,7 @@ server <- function(input, output) {
     
     output$box <- renderPlotly({
         
-        df <- gamelogs_df %>% filter(Class %in% c(input$SelectClass))
+        reactive <- reacitve_df2()
         
         f <- list(
             family = "Courier New, monospace",
@@ -170,17 +167,16 @@ server <- function(input, output) {
         )
         
         fig <- plot_ly(
-            data = df,
+            data = reactive,
             type = "box",
-            x = ~PlayerName,
+            x = ~Player_Name,
             y = ~get(input$SelectMetric_Box),
             color = ~Class,
             colors = "Paired",
             boxpoints = "all",
             jitter = 0.3,
             quartilemethod="exclusive",
-            mode = "markers",
-            hovertemplate  = ~paste('</br> Player Name: ', PlayerName,
+            hovertemplate  = ~paste('</br> Player Name: ', Player_Name,
                                     '</br> Class: ', Class,
                                     '</br> School: ', School,
                                     '</br> Opponent: ', Opponent,
@@ -205,12 +201,12 @@ server <- function(input, output) {
         )
         
         x <- list(
-            title = "X Axis",
+            title = input$SelectMetric_PAP1,
             titlefont = f
         )
         
         y <- list(
-            title = "Y Axis",
+            title = input$SelectMetric_PAP2,
             titlefont = f
         )
         
@@ -219,7 +215,7 @@ server <- function(input, output) {
             x = ~get(input$SelectMetric_PAP1), y = ~get(input$SelectMetric_PAP2), 
             color = ~Class,
             colors = "Paired",
-            hovertemplate  = ~paste('</br> Player Name: ', PlayerName,
+            hovertemplate  = ~paste('</br> Player Name: ', Player_Name,
                                     '</br> Class: ', Class,
                                     '</br> School: ', School,
                                     '</br> Conf: ', Conf,
